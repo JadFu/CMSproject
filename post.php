@@ -2,7 +2,7 @@
 
 require('connect.php');
 
-if ($_POST 
+if ($_POST
         && !empty($_POST['user_id']) 
         && !empty($_POST['game'])
         && isset($_POST['console'])
@@ -93,7 +93,7 @@ if ($_POST
                             <label for="area">AREA</label><br>
                             <input id="area" name="area"><br>
                             <label for="current_condition">CONDITION</label><br>
-                            <select id="catalog" name="catalog">
+                            <select id="current_condition" name="current_condition">
 								<option value="NEW">NEW</option>
 								<option value="USED_LIKE_NEW">USED_LIKE_NEW</option>
 								<option value="USED_FAIR">USED_FAIR</option>
