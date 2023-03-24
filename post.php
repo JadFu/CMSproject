@@ -12,14 +12,14 @@ if ($_POST
         && !empty($_POST['info'])
         && !empty($_POST['price'])) {
     //  Sanitize user input to escape HTML entities and filter out dangerous characters.
-    $user_id = filter_input(INPUT_POST, 'user_id', FILTER_SANITIZE_NUMBER_INT);
+    $user_id = filter_input(INPUT_POST, 'user_id', FILTER_VALIDATE_INT);
     $game = filter_input(INPUT_POST, 'game', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $console = filter_input(INPUT_POST, 'console', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $main_catalog = filter_input(INPUT_POST, 'main_catalog', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $area = filter_input(INPUT_POST, 'area', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $current_condition = filter_input(INPUT_POST, 'current_condition', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $info = filter_input(INPUT_POST, 'info', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-    $price = filter_input(INPUT_POST, 'price', FILTER_SANITIZE_NUMBER_FLOAT);
+    $price = filter_input(INPUT_POST, 'price', FILTER_VALIDATE_FLOAT);
     
     //  Build the parameterized SQL query and bind to the above sanitized values.
     $query = "INSERT INTO item(user_id, game, console, main_catalog, area, current_condition, info, price) VALUES (:user_id, :game, :console, :main_catalog, :area, :current_condition, :info, :price)";
@@ -39,8 +39,6 @@ if ($_POST
     //  execute() will check for possible SQL injection and remove if necessary
     $statement->execute(); 
 
-} else {
-    echo "Error: Some fields are missing or invalid.";
 }
 ?>
 
