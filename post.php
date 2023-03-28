@@ -59,8 +59,7 @@ if ($_POST
                 <fieldset>
                     <legend>New Post:</legend>
                         <div id="post_game">
-                            <label for="user_id">user_id</label><br>
-                            <input id="user_id" name="user_id"><br>
+                            <input type="hidden" name="user_id" value="<?= $_SESSION['user_id'] ?>">
                             <label for="game">NAME OF THE GAME</label><br>
                             <input id="game" name="game"><br>
                             <label for="console">CONSOLE</label><br>
