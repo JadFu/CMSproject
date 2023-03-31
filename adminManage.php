@@ -1,8 +1,9 @@
 <?php
 
-ini_set('session.gc_maxlifetime', 18000);
 session_start();
+session_regenerate_id(true);
 require('connect.php');
+
 
     $user_id = filter_input(INPUT_GET, 'user_id', FILTER_SANITIZE_NUMBER_INT);
      // SQL is written as a String.

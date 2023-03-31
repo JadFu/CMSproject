@@ -1,7 +1,7 @@
 <?php
 
-ini_set('session.gc_maxlifetime', 18000);
 session_start();
+session_regenerate_id(true);
 require('connect.php');
 
 

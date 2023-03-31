@@ -1,9 +1,11 @@
 <?php
 
-ini_set('session.gc_maxlifetime', 18000);
 session_start();
+session_regenerate_id(true);
 require('connect.php');
-    
+
+
+
 if ($_POST && !empty($_POST['console']) ){
 
     $console = filter_input(INPUT_POST, 'console', FILTER_SANITIZE_FULL_SPECIAL_CHARS);

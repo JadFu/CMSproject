@@ -1,8 +1,9 @@
 <?php
 
-ini_set('session.gc_maxlifetime', 18000);
 session_start();
+session_regenerate_id(true);
 require('connect.php');
+
 
 if ($_POST && !empty($_POST['username']) && !empty($_POST['userpass']) && !empty($_POST['userpass2']) && !empty($_POST['email'])) {
     //  Sanitize user input to escape HTML entities and filter out dangerous characters.

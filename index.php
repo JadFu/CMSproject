@@ -1,9 +1,10 @@
 <?php
 
-ini_set('session.gc_maxlifetime', 18000);
 session_start();
+session_regenerate_id(true);
 require('connect.php');
     
+
      // SQL is written as a String.
      $query = "SELECT * FROM item ";
 
@@ -31,15 +32,17 @@ require('connect.php');
         <div id="header">
             <h1><a href="index.php">Graphic Card Haters</a></h1>
             <?php if(!isset($_SESSION['userrole'])): ?>
-                <h3><a href="login.php">login</a>/<a href="register.php" onclick="<?php session_destroy(); ?>">register</a></h3>
+                <h3><a href="login.php">login</a>/<a href="register.php">register</a></h3>
             <?php else: ?>
-                <h3><a href="profile.php?user_id=<?= $_SESSION['user_id'] ?>">profile</a>/<a href="index.php" onclick="<?php session_destroy(); ?>">logout</a></h3>
+                <h3><a href="profile.php?user_id=<?= $_SESSION['user_id'] ?>">profile</a>/<a href="logout.php">logout</a></h3>
             <?php endif ?>
         </div>
 
         <ul id="menu">
             <li><a href="index.php" class='active'>Home</a></li>
-            <li><a href="post.php">Post Item</a></li>
+            <?php if(isset($_SESSION['userrole'])): ?>
+                <li><a href="post.php">Post Item</a></li>
+            <?php endif ?>
         </ul>
 
         <ul id="menu">
