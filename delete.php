@@ -1,7 +1,7 @@
 <?php
 
-session_start();
 ini_set('session.gc_maxlifetime', 18000);
+session_start();
 require('connect.php');
 
 if ($_POST && isset($_POST['item_id']) && filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT)) {

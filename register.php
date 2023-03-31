@@ -1,14 +1,16 @@
 <?php
 
-session_start();
 ini_set('session.gc_maxlifetime', 18000);
+session_start();
 require('connect.php');
 
 if ($_POST && !empty($_POST['username']) && !empty($_POST['userpass']) && !empty($_POST['userpass2']) && !empty($_POST['email'])) {
     //  Sanitize user input to escape HTML entities and filter out dangerous characters.
     $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-    $userpass = filter_input(INPUT_POST, 'userpass', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-    $userpass2 = filter_input(INPUT_POST, 'userpass2', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    //$userpass = filter_input(INPUT_POST, 'userpass', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    //$userpass2 = filter_input(INPUT_POST, 'userpass2', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $userpass = $_POST['userpass'];
+    $userpass2 = $_POST['userpass2'];
     $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
     $userinfo = filter_input(INPUT_POST, 'userinfo', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
@@ -61,9 +63,9 @@ if ($_POST && !empty($_POST['username']) && !empty($_POST['userpass']) && !empty
                             <label for="email">E-mail:</label><br>
                             <input id="email" name="email"><br>
                             <label for="userpass">Password:</label><br>
-                            <input id="userpass" name="userpass"><br>
+                            <input type="password" id="userpass" name="userpass"><br>
                             <label for="userpass2">Repeat Password:</label><br>
-                            <input id="userpass2" name="userpass2"><br>
+                            <input type="password" id="userpass2" name="userpass2"><br>
                         </div>
 
                         <div id="User Introduction">
@@ -78,12 +80,12 @@ if ($_POST && !empty($_POST['username']) && !empty($_POST['userpass']) && !empty
             </form>
         <?php elseif(!$_SESSION['registatus']): ?>
             <h2>Registration failed</h2>
-            <h3><a href="register.php">Click here to re-register</a></h2>
-            <h3><a href="index.php">Click here to continue as guests</a></h2>
+            <h3><a href="register.php" onclick="<?php session_destroy(); ?>">Click here to re-register</a></h2>
+            <h3><a href="index.php" onclick="<?php session_destroy(); ?>">Click here to continue as guests</a></h2>
         <?php else: ?>
             <h2>Thanks for your Registration</h2>
             <h3>Now you can login through home page</h3>
-            <h3><a href="index.php">Go back to home page</a></h2>
+            <h3><a href="index.php" onclick="<?php session_destroy(); ?>">Go back to home page</a></h2>
         <?php endif ?>
     </div>
 </body>

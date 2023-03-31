@@ -1,7 +1,7 @@
 <?php
 
-session_start();
 ini_set('session.gc_maxlifetime', 18000);
+session_start();
 require('connect.php');
     
      // SQL is written as a String.
