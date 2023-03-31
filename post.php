@@ -1,5 +1,7 @@
 <?php
 
+session_start();
+ini_set('session.gc_maxlifetime', 18000);
 require('connect.php');
 
 if ($_POST
@@ -59,7 +61,9 @@ if ($_POST
                 <fieldset>
                     <legend>New Post:</legend>
                         <div id="post_game">
+
                             <input type="hidden" name="user_id" value="<?= $_SESSION['user_id'] ?>">
+
                             <label for="game">NAME OF THE GAME</label><br>
                             <input id="game" name="game"><br>
                             <label for="console">CONSOLE</label><br>

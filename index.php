@@ -1,6 +1,7 @@
 <?php
 
-
+session_start();
+ini_set('session.gc_maxlifetime', 18000);
 require('connect.php');
     
      // SQL is written as a String.
@@ -29,6 +30,11 @@ require('connect.php');
     <div id="wrapper">
         <div id="header">
             <h1><a href="index.php">Graphic Card Haters</a></h1>
+            <?php if(!isset($_SESSION['userrole'])): ?>
+                <h3><a href="login.php">login</a>/<a href="register.php" onclick="<?php session_destroy(); ?>">register</a></h3>
+            <?php else: ?>
+                <h3><a href="index.php" onclick="<?php session_destroy(); ?>">logout</a></h3>
+            <?php endif ?>
         </div>
 
         <ul id="menu">
@@ -70,17 +76,21 @@ require('connect.php');
         </ul>
 
         <div id="all_item">
-            <?php while($rows = $statement->fetch()): ?> 
+            <?php while($rows = $statement->fetch()): ?>
                 <div class="item_post">
-                    <h5><?= $rows['user_id'] ?></h5>
-                    <h5><?= $rows['game'] ?></h5>
-                    <h5><?= $rows['last_update'] ?></h5>
-                    <h5><?= $rows['console'] ?></h5>
-                    <h5><?= $rows['main_catalog'] ?></h5>
-                    <h5><?= $rows['area'] ?></h5>
-                    <h5><?= $rows['current_condition'] ?></h5>
-                    <h5><?= $rows['info'] ?></h5>
-                    <h5><?= $rows['price'] ?></h5>
+                    <p><?= $rows['game'] ?></p>
+                    <?php $timestamp = strtotime($rows['last_update']);?>
+                    <p><small><?= date("F j, Y, g:i a", $timestamp) ?>
+                        <?php if(isset($_SESSION['userrole']) && ($_SESSION['user_id'] === $rows['user_id'] || $_SESSION['userrole'] === 'admin')): ?>
+                        -<a href="edit.php?item_id=<?= $rows['item_id']?>">edit</a></small>
+                        <?php endif ?>
+                    </p>
+                    <p><?= $rows['console'] ?></p>
+                    <p><?= $rows['main_catalog'] ?></p>
+                    <p><?= $rows['area'] ?></p>
+                    <p><?= $rows['current_condition'] ?></p>
+                    <p><?= $rows['info'] ?></p>
+                    <p><?= $rows['price'] ?></p>
                 </div>
             <?php endwhile ?>
         </div>

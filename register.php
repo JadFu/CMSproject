@@ -1,6 +1,7 @@
 <?php
 
 session_start();
+ini_set('session.gc_maxlifetime', 18000);
 require('connect.php');
 
 if ($_POST && !empty($_POST['username']) && !empty($_POST['userpass']) && !empty($_POST['userpass2']) && !empty($_POST['email'])) {
@@ -26,6 +27,8 @@ if ($_POST && !empty($_POST['username']) && !empty($_POST['userpass']) && !empty
     //  Execute the INSERT.
     //  execute() will check for possible SQL injection and remove if necessary
     $statement->execute(); 
+
+    $_SESSION['registatus'] = true;
 
     } elseif(strcmp($userpass,$userpass2) != 0) {
 

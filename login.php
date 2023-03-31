@@ -1,8 +1,8 @@
 <?php
 
-require('connect.php');
-
 session_start();
+ini_set('session.gc_maxlifetime', 18000);
+require('connect.php');
 
 if ($_POST && !empty($_POST['username']) && !empty($_POST['userpass'])) {
   // Sanitize user input to escape HTML entities and filter out dangerous characters.
@@ -27,6 +27,7 @@ if ($_POST && !empty($_POST['username']) && !empty($_POST['userpass'])) {
 
 if(strcmp($rows['name'],$username) === 0 && strcmp($rows['password'],$userpass) === 0){
   $_SESSION['user_id'] = $rows['user_id'];
+  $_SESSION['username'] = $username;
   $_SESSION['userrole'] = $rows['role'];
 } else {
   echo "Invalid username or password.";
