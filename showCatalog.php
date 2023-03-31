@@ -1,9 +1,13 @@
 <?php
 
-ini_set('session.gc_maxlifetime', 18000);
 session_start();
 require('connect.php');
+
     
+echo($_SESSION['user_id']);
+echo($_SESSION['username']);
+echo($_SESSION['userrole']);
+
 if ($_POST && !empty($_POST['main_catalog']) ){
 
     $main_catalog = filter_input(INPUT_POST, 'main_catalog', FILTER_SANITIZE_FULL_SPECIAL_CHARS);

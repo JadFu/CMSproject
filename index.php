@@ -1,9 +1,11 @@
 <?php
 
-ini_set('session.gc_maxlifetime', 18000);
 session_start();
 require('connect.php');
     
+echo($_SESSION['user_id']);
+echo($_SESSION['username']);
+echo($_SESSION['userrole']);
      // SQL is written as a String.
      $query = "SELECT * FROM item ";
 
@@ -39,7 +41,9 @@ require('connect.php');
 
         <ul id="menu">
             <li><a href="index.php" class='active'>Home</a></li>
-            <li><a href="post.php">Post Item</a></li>
+            <?php if(isset($_SESSION['userrole'])): ?>
+                <li><a href="post.php">Post Item</a></li>
+            <?php endif ?>
         </ul>
 
         <ul id="menu">

@@ -1,8 +1,12 @@
 <?php
 
-ini_set('session.gc_maxlifetime', 18000);
 session_start();
 require('connect.php');
+
+    
+echo($_SESSION['user_id']);
+echo($_SESSION['username']);
+echo($_SESSION['userrole']);
 
 if ($_POST && !empty($_POST['username']) && !empty($_POST['userpass']) && !empty($_POST['userpass2']) && !empty($_POST['email'])) {
     //  Sanitize user input to escape HTML entities and filter out dangerous characters.

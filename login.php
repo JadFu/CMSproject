@@ -1,8 +1,11 @@
 <?php
 
-ini_set('session.gc_maxlifetime', 18000);
 session_start();
 require('connect.php');
+
+echo($_SESSION['user_id']);
+echo($_SESSION['username']);
+echo($_SESSION['userrole']);
 
 if ($_POST && !empty($_POST['username']) && !empty($_POST['userpass'])) {
   // Sanitize user input to escape HTML entities and filter out dangerous characters.
@@ -10,8 +13,6 @@ if ($_POST && !empty($_POST['username']) && !empty($_POST['userpass'])) {
   $userpass = filter_input(INPUT_POST, 'userpass', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
      // SQL is written as a String.
-     echo($_POST['username']);
-     echo($_POST['userpass']);
      $query = "SELECT * FROM USER WHERE name = :username AND password = :userpass";
 
      // A PDO::Statement is prepared from the query.
@@ -56,7 +57,7 @@ if(strcmp($rows['name'],$username) === 0 && strcmp($rows['password'],$userpass) 
       </form>
     </div>
     <?php else: ?>
-      <h2>Thank You for Using Graphic Card Haters, <?= $_SESSION['userrole'] ?><?= $_SESSION['username'] ?></h2>
+      <h2>Thank You for Using Graphic Card Haters, <?= $_SESSION['userrole'] ?> <?= $_SESSION['username'] ?></h2>
       <h3><a href="index.php">click here to go back to home page!</a></h3>
     <?php endif ?>
 </body>

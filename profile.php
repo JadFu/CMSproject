@@ -1,9 +1,13 @@
 <?php
 
-ini_set('session.gc_maxlifetime', 18000);
 session_start();
 require('connect.php');
+
     
+echo($_SESSION['user_id']);
+echo($_SESSION['username']);
+echo($_SESSION['userrole']);
+
     $user_id = filter_input(INPUT_GET, 'user_id', FILTER_SANITIZE_NUMBER_INT);
      // SQL is written as a String.
      $query = "SELECT * FROM user WHERE user_id = :user_id";

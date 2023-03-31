@@ -1,8 +1,12 @@
 <?php
 
-ini_set('session.gc_maxlifetime', 18000);
 session_start();
 require('connect.php');
+
+    
+echo($_SESSION['user_id']);
+echo($_SESSION['username']);
+echo($_SESSION['userrole']);
 
 if ($_POST
         && !empty($_POST['user_id']) 
@@ -56,7 +60,7 @@ if ($_POST
 <body>
     <!-- Remember that alternative syntax is good and html inside php is bad -->
     <div id="postcard">
-        <?php if(!$_POST):?>
+        <?php if(!$_POST && isset($_SESSION['user_id'])):?>
             <form method="post" action="post.php">
                 <fieldset>
                     <legend>New Post:</legend>

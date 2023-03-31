@@ -1,8 +1,12 @@
 <?php
 
-ini_set('session.gc_maxlifetime', 18000);
 session_start();
 require('connect.php');
+
+    
+echo($_SESSION['user_id']);
+echo($_SESSION['username']);
+echo($_SESSION['userrole']);
 
 if ($_POST && isset($_POST['item_id']) && filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT)) {
         // Sanitize user input to escape HTML entities and filter out dangerous characters.
