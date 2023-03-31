@@ -8,7 +8,7 @@ require('connect.php');
 if ($_POST && !empty($_POST['username']) && !empty($_POST['userpass'])) {
   // Sanitize user input to escape HTML entities and filter out dangerous characters.
   $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-  $userpass = filter_input(INPUT_POST, 'userpass', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+  $userpass = $_POST['userpass'];
 
      // SQL is written as a String.
      $query = "SELECT * FROM USER WHERE name = :username AND password = :userpass";
@@ -22,9 +22,7 @@ if ($_POST && !empty($_POST['username']) && !empty($_POST['userpass'])) {
      // Execution on the DB server is delayed until we execute().
      $statement->execute(); 
 
-     $rows = $statement->fetch();
-
-if(strcmp($rows['name'],$username) === 0 && strcmp($rows['password'],$userpass) === 0){
+if($rows = $statement->fetch()){
 
   $_SESSION['user_id'] = $rows['user_id'];
   $_SESSION['username'] = $username;

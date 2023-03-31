@@ -6,13 +6,12 @@ require('connect.php');
 
 
 if ($_POST 
-    && isset($_POST['item_id'])
+    && !empty($_POST['item_id'])
     && !empty($_POST['game'])
     && !empty($_POST['console'])
     && !empty($_POST['main_catalog'])
     && !empty($_POST['area'])
     && !empty($_POST['current_condition'])
-    && !empty($_POST['info'])
     && !empty($_POST['price'])) {
         // Sanitize user input to escape HTML entities and filter out dangerous characters.
         echo("1");
@@ -61,7 +60,7 @@ if ($_POST
 
     } else {
         echo("3");
-        $id = false; // False if we are not UPDATING or SELECTING.
+        $item_id = false; // False if we are not UPDATING or SELECTING.
     }
 
 ?>

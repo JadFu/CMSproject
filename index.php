@@ -6,7 +6,7 @@ require('connect.php');
     
 
      // SQL is written as a String.
-     $query = "SELECT * FROM item ";
+     $query = "SELECT * FROM item ORDER BY last_update DESC";
 
      // A PDO::Statement is prepared from the query.
      $statement = $db->prepare($query);
