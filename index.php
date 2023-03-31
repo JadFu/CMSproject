@@ -33,7 +33,7 @@ require('connect.php');
             <?php if(!isset($_SESSION['userrole'])): ?>
                 <h3><a href="login.php">login</a>/<a href="register.php" onclick="<?php session_destroy(); ?>">register</a></h3>
             <?php else: ?>
-                <h3><a href="index.php" onclick="<?php session_destroy(); ?>">logout</a></h3>
+                <h3><a href="profile.php?user_id=<?= $_SESSION['user_id'] ?>">profile</a>/<a href="index.php" onclick="<?php session_destroy(); ?>">logout</a></h3>
             <?php endif ?>
         </div>
 
