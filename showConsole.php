@@ -36,17 +36,11 @@ if ($_POST && !empty($_POST['console']) ){
         <div id="all_item">
             <?php while($rows = $statement->fetch()): ?>
                 <div class="item_post">
-                    <p><?= $rows['game'] ?></p>
+                <p><?= $rows['game'] ?></p>
                     <?php $timestamp = strtotime($rows['last_update']);?>
-                    <p><small><?= date("F j, Y, g:i a", $timestamp) ?>
-                        <?php if(isset($_SESSION['userrole']) && ($_SESSION['user_id'] === $rows['user_id'] || $_SESSION['userrole'] === 'admin')): ?>
-                        -<a href="edit.php?item_id=<?= $rows['item_id']?>">edit</a></small>
-                        <?php endif ?>
+                    <p><small><?= date("F j, Y, g:i a", $timestamp) ?> -<a href="show.php?item_id=<?= $rows['item_id']?>">see full post</a></small>
                     </p>
                     <p><?= $rows['main_catalog'] ?></p>
-                    <p><?= $rows['area'] ?></p>
-                    <p><?= $rows['current_condition'] ?></p>
-                    <p><?= $rows['info'] ?></p>
                     <p><?= $rows['price'] ?></p>
                 </div>
             <?php endwhile ?>
