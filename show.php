@@ -67,7 +67,7 @@ if ($_POST
                     <p><?= $rows['game'] ?></p>
                     <?php $timestamp = strtotime($rows['last_update']);?>
                     <p><small><?= date("F j, Y, g:i a", $timestamp) ?>
-                        <?php if(isset($_SESSION['userrole']) && ($_SESSION['user_id'] === $rows['user_id'] || $_SESSION['userrole'] === 'admin')): ?>
+                        <?php if(isset($_SESSION['user_id']) && ($rows['user_id'] === $_SESSION['user_id'] || $_SESSION['userrole'] === 'admin')): ?>
                         -<a href="edit.php?item_id=<?= $rows['item_id']?>">edit</a></small>
                         <?php endif ?>
                     </p>
@@ -84,9 +84,9 @@ if ($_POST
                 <?php while($comRows = $comStatement->fetch()): ?>
                     <h3><?= $comRows['name'] ?></h3>
                     <p><small><?= date("F j, Y, g:i a", $timestamp) ?>
-                        <!--<?php if(isset($_SESSION['user_id'])): ?>
-                        -<a href="editCom.php?comment_id=<?= $rows['comment_id']?>">edit</a></small>
-                        <?php endif ?>-->
+                        <?php if(isset($_SESSION['user_id']) && ($rows['user_id'] === $_SESSION['user_id'] || $_SESSION['userrole'] === 'admin')): ?>
+                        -<a href="editCom.php?comment_id=<?= $comRows['comment_id']?>">edit comments</a></small>
+                        <?php endif ?>
                     </p>
                     <p><?= $comRows['comments'] ?></p>
                 <?php endwhile ?>  
@@ -100,6 +100,23 @@ if ($_POST
                     <input type="hidden" name="user_id" value="<?= $_SESSION['user_id'] ?>">
 
                         <label for="comments">post comments</label><br>
+                        <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+
+                        
+                        <script>
+                        tinymce.init({
+                            selector: '#comments',
+                            plugins: [
+                            'a11ychecker','advlist','advcode','advtable','autolink','checklist','export',
+                            'lists','link','image','charmap','preview','anchor','searchreplace','visualblocks',
+                            'powerpaste','fullscreen','formatpainter','insertdatetime','media','table','help','wordcount'
+                            ],
+                            toolbar: 'undo redo | formatpainter casechange blocks | bold italic backcolor | ' +
+                            'alignleft aligncenter alignright alignjustify | ' +
+                            'bullist numlist checklist outdent indent | removeformat | a11ycheck code table help'
+                        });
+                        </script>
+
                         <textarea id="comments" name="comments" rows="10" cols="100"></textarea>
 
                         <input type="submit">

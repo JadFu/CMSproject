@@ -14,7 +14,7 @@ if ($_POST
     && !empty($_POST['current_condition'])
     && !empty($_POST['price'])) {
         // Sanitize user input to escape HTML entities and filter out dangerous characters.
-        echo("1");
+        echo('1');
         $game = filter_input(INPUT_POST, 'game', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $console = filter_input(INPUT_POST, 'console', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $main_catalog = filter_input(INPUT_POST, 'main_catalog', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
