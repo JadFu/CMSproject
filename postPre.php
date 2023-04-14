@@ -53,7 +53,7 @@ require('connect.php');
                             <label for="categories">CATEGORIES</label><br>
                             <select id="categories" name="categories">
                                 <?php while($rowCat = $statementCat->fetch()): ?>
-								<option value="<?= $rowCat['categories']?>"><?= $rowCon['info']?></option>
+								<option value="<?= $rowCat['categories']?>"><?= $rowCat['info']?></option>
                                 <?php endwhile ?>
 						    </select><br>
                         </div>

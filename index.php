@@ -48,7 +48,7 @@ require('connect.php');
         <ul id="menu">
             <li><a href="index.php" class='active'>Home</a></li>
             <?php if(isset($_SESSION['userrole'])): ?>
-                <li><a href="post.php">Post Item</a></li>
+                <li><a href="postPre.php">Post Item</a></li>
             <?php endif ?>
         </ul>
 
@@ -65,7 +65,7 @@ require('connect.php');
             </li>
             <li>
                 <form method="post" action="showCategories.php">
-                    <select id="Categories" name="Categories">
+                    <select id="categories" name="categories">
                         <?php while($rowCat = $statementCat->fetch()): ?>
 							<option value="<?= $rowCat['categories']?>"><?= $rowCat['info']?></option>
                         <?php endwhile ?>

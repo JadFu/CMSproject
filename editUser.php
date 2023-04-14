@@ -45,9 +45,11 @@ if (isset($_GET['user_id'])) { // Retrieve quote to be edited, if id GET paramet
 
                         <div>
                             <label for="name">User Name</label><br>
-                            <input id="name" name="name" value="<?= $rows['name'] ?>">
+                            <input id="name" name="name" value="<?= $rows['name'] ?>"><br>
+                            <label for="password">password</label><br>
+                            <input type="password" id="password" name="password" value="<?= $rows['password'] ?>"><br>
                             <label for="email">User E-mail</label><br>
-                            <input id="email" name="email" value="<?= $rows['email'] ?>">
+                            <input id="email" name="email" value="<?= $rows['email'] ?>"><br>
                         </div>
 
                         <div>

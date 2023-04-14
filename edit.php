@@ -57,13 +57,13 @@ if (isset($_GET['item_id'])) {
                             <label for="console">CONSOLE</label><br>
                             <select id="console" name="console" selectedValue="<?= $rows['console'] ?>">
                                 <?php while($rowCon = $statementCon->fetch()): ?>
-								<option value="<?= $rowCon['console_title']?>"><?= $rowCon['console_title']?></option>
+								    <option value="<?= $rowCon['console_title']?>" <?php if($rowCon['console_title'] == $rows['console']):?>selected<?php endif?>><?= $rowCon['console_title']?></option>
                                 <?php endwhile ?>
 						    </select><br>
                             <label for="categories">CATEGORIES</label><br>
                             <select id="categories" name="categories" selectedValue="<?= $rows['categories'] ?>">
                                 <?php while($rowCat = $statementCat->fetch()): ?>
-								<option value="<?= $rowCat['categories']?>"><?= $rowCon['info']?></option>
+								    <option value="<?= $rowCat['categories']?>" <?php if($rowCat['categories'] == $rows['categories']):?>selected<?php endif?>><?= $rowCat['info']?></option>
                                 <?php endwhile ?>
 						    </select><br>
                         </div>
@@ -80,7 +80,7 @@ if (isset($_GET['item_id'])) {
 								<option value="DIGITAL_COPY_CODE">DIGITAL_COPY_CODE</option>
 						    </select><br>
                             <label for="info">ITEM INFORMATION</label><br>
-                            <textarea id="info" name="info" rows="10" cols="100" value="<?= $rows['info'] ?>"></textarea>
+                            <textarea id="info" name="info" rows="10" cols="100"><?= $rows['info'] ?></textarea>
                         </div>
 
                         <div id="post_price">
