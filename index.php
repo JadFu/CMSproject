@@ -1,18 +1,25 @@
 <?php
 
 session_start();
-session_regenerate_id(true);
 require('connect.php');
     
 
      // SQL is written as a String.
-     $query = "SELECT * FROM item ORDER BY last_update DESC";
+    $query = "SELECT * FROM item ORDER BY last_update DESC";
+    $queryCat = "SELECT * FROM category";
+    $queryCon = "SELECT * FROM console";
 
-     // A PDO::Statement is prepared from the query.
-     $statement = $db->prepare($query);
-
-     // Execution on the DB server is delayed until we execute().
-     $statement->execute(); 
+    $statement = $db->prepare($query);
+    $statementCat = $db->prepare($queryCat);
+    $statementCon = $db->prepare($queryCon);
+    
+    //  Bind values to the parameters
+    
+    //  Execute the INSERT.
+    //  execute() will check for possible SQL injection and remove if necessary
+    $statement->execute(); 
+    $statementCat->execute(); 
+    $statementCon->execute();
 
 ?>
 
@@ -34,7 +41,7 @@ require('connect.php');
             <?php if(!isset($_SESSION['userrole'])): ?>
                 <h3><a href="login.php">login</a>/<a href="register.php">register</a></h3>
             <?php else: ?>
-                <h3><a href="profile.php?user_id=<?= $_SESSION['user_id'] ?>">profile</a>/<a href="logout.php">logout</a></h3>
+                <h3><a href="profile.php">profile</a>/<a href="logout.php">logout</a></h3>
             <?php endif ?>
         </div>
 
@@ -49,30 +56,20 @@ require('connect.php');
             <li>
                 <form method="post" action="showConsole.php">
                         <select id="console" name="console">
-								<option value="Nintendo Switch">Nintendo Switch</option>
-								<option value="PlayStation 4">PlayStation 4</option>
-								<option value="PlayStation 5">PlayStation 5</option>
-								<option value="Steam Deck">Steam Deck</option>
-								<option value="Xbox One">Xbox One</option>
-								<option value="Xbox Series X/S">Xbox Series X/S</option>
-                                <option value="others">others</option>
+                            <?php while($rowCon = $statementCon->fetch()): ?>
+							<option value="<?= $rowCon['console_title']?>"><?= $rowCon['console_title']?></option>
+                            <?php endwhile ?>
 						</select>
                     <input type="submit">
                 </form >
             </li>
             <li>
-                <form method="post" action="showCatalog.php">
-                    <select id="main_catalog" name="main_catalog">
-								<option value="BSG">Business simulation game</option>
-								<option value="FPS">First-person Shooter</option>
-								<option value="Horror">Horror game</option>
-								<option value="Music">Music game</option>
-								<option value="Rougelike">plural rougelikes</option>
-								<option value="RPG">Role-play game</option>
-                                <option value="RTS">Real-time Strategy</option>
-                                <option value="TBS">Turn-based Strategy</option>
-                                <option value="Others">others</option>
-						</select>
+                <form method="post" action="showCategories.php">
+                    <select id="Categories" name="Categories">
+                        <?php while($rowCat = $statementCat->fetch()): ?>
+							<option value="<?= $rowCat['categories']?>"><?= $rowCat['info']?></option>
+                        <?php endwhile ?>
+					</select>
                     <input type="submit">
                 </form >
             </li>
@@ -86,7 +83,7 @@ require('connect.php');
                     <p><small><?= date("F j, Y, g:i a", $timestamp) ?> -<a href="show.php?item_id=<?= $rows['item_id']?>">see full post</a></small>
                     </p>
                     <p><?= $rows['console'] ?></p>
-                    <p><?= $rows['main_catalog'] ?></p>
+                    <p><?= $rows['categories'] ?></p>
                     <p><?= $rows['price'] ?></p>
                 </div>
             <?php endwhile ?>

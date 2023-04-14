@@ -9,7 +9,7 @@ if ($_POST
         && !empty($_POST['user_id']) 
         && !empty($_POST['game'])
         && isset($_POST['console'])
-        && isset($_POST['main_catalog'])
+        && isset($_POST['categories'])
         && !empty($_POST['area'])
         && isset($_POST['current_condition'])
         && !empty($_POST['info'])
@@ -18,21 +18,21 @@ if ($_POST
     $user_id = filter_input(INPUT_POST, 'user_id', FILTER_VALIDATE_INT);
     $game = filter_input(INPUT_POST, 'game', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $console = filter_input(INPUT_POST, 'console', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-    $main_catalog = filter_input(INPUT_POST, 'main_catalog', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $categories = filter_input(INPUT_POST, 'categories', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $area = filter_input(INPUT_POST, 'area', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $current_condition = filter_input(INPUT_POST, 'current_condition', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $info = filter_input(INPUT_POST, 'info', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $price = filter_input(INPUT_POST, 'price', FILTER_VALIDATE_FLOAT);
     
     //  Build the parameterized SQL query and bind to the above sanitized values.
-    $query = "INSERT INTO item(user_id, game, console, main_catalog, area, current_condition, info, price) VALUES (:user_id, :game, :console, :main_catalog, :area, :current_condition, :info, :price)";
+    $query = "INSERT INTO item(user_id, game, console, categories, area, current_condition, info, price) VALUES (:user_id, :game, :console, :categories, :area, :current_condition, :info, :price)";
     $statement = $db->prepare($query);
     
     //  Bind values to the parameters
     $statement->bindValue(':user_id', $user_id);
     $statement->bindValue(':game', $game);
     $statement->bindValue(':console', $console);
-    $statement->bindValue(':main_catalog', $main_catalog);
+    $statement->bindValue(':categories', $categories);
     $statement->bindValue(':area', $area);
     $statement->bindValue(':current_condition', $current_condition);
     $statement->bindValue(':info', $info);
@@ -77,8 +77,8 @@ if ($_POST
 								<option value="Xbox Series X/S">Xbox Series X/S</option>
                                 <option value="others">others</option>
 						    </select><br>
-                            <label for="main_catalog">CATALOG</label><br>
-                            <select id="main_catalog" name="main_catalog">
+                            <label for="categories">CATALOG</label><br>
+                            <select id="categories" name="categories">
 								<option value="BSG">Business simulation game</option>
 								<option value="FPS">First-person Shooter</option>
 								<option value="Horror">Horror game</option>

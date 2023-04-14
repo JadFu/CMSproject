@@ -4,19 +4,19 @@ session_start();
 require('connect.php');
 
 
+if ($_POST && !empty($_POST['categories']) ){
 
-if ($_POST && !empty($_POST['console']) ){
-
-    $console = filter_input(INPUT_POST, 'console', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $categories = filter_input(INPUT_POST, 'categories', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
      // SQL is written as a String.
-     $query = "SELECT * FROM item WHERE console = :console";
+     $query = "SELECT * FROM item WHERE categories = :categories";
 
      // A PDO::Statement is prepared from the query.
      $statement = $db->prepare($query);
 
-     $statement->bindValue(':console', $console);
+     $statement->bindValue(':categories', $categories);
      // Execution on the DB server is delayed until we execute().
+     
      $statement->execute(); 
 }
 ?>
@@ -28,7 +28,7 @@ if ($_POST && !empty($_POST['console']) ){
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="main.css">
-    <title>Graphic Card Haters: Catalog: <?= $console ?></title>
+    <title>Graphic Card Haters: Categories: <?= $categories ?></title>
 </head>
 <body>
     <!-- Remember that alternative syntax is good and html inside php is bad -->
@@ -36,11 +36,11 @@ if ($_POST && !empty($_POST['console']) ){
         <div id="all_item">
             <?php while($rows = $statement->fetch()): ?>
                 <div class="item_post">
-                <p><?= $rows['game'] ?></p>
+                    <p><?= $rows['game'] ?></p>
                     <?php $timestamp = strtotime($rows['last_update']);?>
                     <p><small><?= date("F j, Y, g:i a", $timestamp) ?> -<a href="show.php?item_id=<?= $rows['item_id']?>">see full post</a></small>
                     </p>
-                    <p><?= $rows['categories'] ?></p>
+                    <p><?= $rows['console'] ?></p>
                     <p><?= $rows['price'] ?></p>
                 </div>
             <?php endwhile ?>

@@ -2,11 +2,10 @@
 
 
 session_start();
-session_regenerate_id(true);
 require('connect.php');
 
 
-if ($_POST && isset($_POST['user_id']) && filter_input(INPUT_GET, 'user_id', FILTER_VALIDATE_INT)) {
+if ($_POST && $_POST['formStatus'] == 'deleteUser') {
         // Sanitize user input to escape HTML entities and filter out dangerous characters.
         $user_id = filter_input(INPUT_POST, 'user_id', FILTER_SANITIZE_NUMBER_INT);
         
