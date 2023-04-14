@@ -1,11 +1,10 @@
 <?php
 
 session_start();
-session_regenerate_id(true);
 require('connect.php');
 
 
-if ($_POST && !empty($_POST['username']) && !empty($_POST['userpass'])) {
+if ($_POST && isset($_POST['username']) && isset($_POST['userpass'])) {
   // Sanitize user input to escape HTML entities and filter out dangerous characters.
   $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
   $userpass = $_POST['userpass'];
@@ -31,6 +30,7 @@ if($rows = $statement->fetch()){
 } else {
   echo "Invalid username or password.";
 }
+
 }
 
 ?>

@@ -1,16 +1,15 @@
 <?php
 
 session_start();
-session_regenerate_id(true);
 require('connect.php');
 
 
-if ($_POST && isset($_POST['item_id']) && filter_input(INPUT_GET, 'item_id', FILTER_VALIDATE_INT)) {
+if ($_POST && $_POST['formStatus'] == 'deletePost') {
         // Sanitize user input to escape HTML entities and filter out dangerous characters.
         $item_id = filter_input(INPUT_POST, 'item_id', FILTER_SANITIZE_NUMBER_INT);
         
         // Build the parameterized SQL query and bind to the above sanitized values.
-        $query     = "DELETE FROM item WHERE item_id = :item_id";
+        $query = "DELETE FROM item WHERE item_id = :item_id";
         $statement = $db->prepare($query);
 
         $statement->bindValue(':item_id', $item_id, PDO::PARAM_INT);
@@ -31,9 +30,9 @@ if ($_POST && isset($_POST['item_id']) && filter_input(INPUT_GET, 'item_id', FIL
 </head>
 <body>
     <!-- Remember that alternative syntax is good and html inside php is bad -->
-    <?php if(!filter_input(INPUT_POST, 'item_id', FILTER_VALIDATE_INT)):?>
+    <?php if(!filter_input(INPUT_POST, 'item_id', FILTER_VALIDATE_INT) || $_POST['formStatus'] != 'deletePost'):?>
 
-        <h3>Invalid Item Post ID: Cannot find post information</h3>
+        <h3>Failed to delete post: Cannot find post information</h3>
         <h2><a href="index.php">Go Back To Home Page</a></h2>
 
     <?php else: ?>
