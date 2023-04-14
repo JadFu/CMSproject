@@ -26,7 +26,7 @@ require('connect.php');
         <h2>Current Console_title</h2>
         <ul>
             <li><b>Console Name</b></li>
-            <?php while($rowCon = $statementCon->fetch()) ?>
+            <?php while($rowCon = $statementCon->fetch()): ?>
                 <li><?= $rowCon['console_title'] ?></li>
             <?php endwhile ?>
         </ul>
@@ -43,8 +43,8 @@ require('connect.php');
 
                             <input type="hidden" name="formStatus" value="newCon">
 
-                            <label for="Console_title">Console Name:</label><br>
-                            <input id="Console_title" name="Console_title" placeholder="Check the Current Console_title"><br>
+                            <label for="console_title">Console Name:</label><br>
+                            <input id="console_title" name="console_title" placeholder="Check the Current Console_title"><br>
 
                             <label for="info">Console information</label><br>
                             <textarea id="info" name="info" rows="10" cols="100" placeholder="Check the Current Console_title Above, Make sure the Console_title are not duplicate!"></textarea>

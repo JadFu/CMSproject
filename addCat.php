@@ -26,7 +26,7 @@ require('connect.php');
         <h2>Current Categories</h2>
         <ul>
             <li><b>Abbreviation - Full Name</b></li>
-            <?php while($rowCat = $statementCat->fetch()) ?>
+            <?php while($rowCat = $statementCat->fetch()): ?>
                 <li><?= $rowCat['categories'] ?> - <?= $rowCat['info'] ?></li>
             <?php endwhile ?>
         </ul>
