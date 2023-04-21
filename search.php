@@ -3,20 +3,17 @@
 session_start();
 require('connect.php');
     $validSearch = false;
-    $search = filter_input(INPUT_GET, 'search', FILTER_SANITIZE_NUMBER_INT);
+    $search = filter_input(INPUT_POST, 'search', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $base = filter_input(INPUT_POST, 'base', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-    $variable = mysql_real_escape_string($search);
     if($_POST && $_POST['formStatus'] == 'search' && $_POST['base'] == "name"){
         $validSearch = true;
-        $query = "SELECT * FROM item WHERE game LIKE '%{$variable}%'";
+        $query = "SELECT * FROM item WHERE game LIKE '%{$search}%'";
     }elseif($_POST && $_POST['formStatus'] == 'search' && $_POST['base'] == "console"){
         $validSearch = true;
-        $query = "SELECT * FROM item WHERE console LIKE '%{$variable}%'";
-    }elseif($_POST && $_POST['formStatus'] == 'search' && $_POST['base'] == "catagory"){
+        $query = "SELECT * FROM item WHERE console LIKE '%{$search}%'";
+    }elseif($_POST && $_POST['formStatus'] == 'search' && $_POST['base'] == "category"){
         $validSearch = true;
-        $query = "SELECT * FROM item JOIN category ON category.catagories = item.catagories WHERE item.catagories LIKE '%{$variable}%' OR category.info LIKE '%{$variable}%'";
-    }else{
-        $query = "SELECT * FROM item";
+        $query = "SELECT * FROM item JOIN category ON category.categories = item.categories WHERE item.categories LIKE '%{$search}%' OR category.info LIKE '%{$search}%'";
     }
      // A PDO::Statement is prepared from the query.
      $statement = $db->prepare($query);
