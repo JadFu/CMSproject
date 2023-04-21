@@ -6,21 +6,21 @@ require('connect.php');
     $item_id = filter_input(INPUT_GET, 'item_id', FILTER_SANITIZE_NUMBER_INT);
 
      // SQL is written as a String.
-     $query = "SELECT * FROM item WHERE item_id = $item_id";
-     $queryImg = "SELECT * FROM image WHERE item_id = $item_id";
+     $query = "SELECT * FROM item WHERE item_id = :item_id";
      $queryCom = "SELECT comment.comment_id, comment.item_id, comment.user_id, comment.post_time, comment.comments, user.name
                     FROM comment JOIN user ON comment.user_id = user.user_id
-                    WHERE comment.item_id = $item_id
+                    WHERE comment.item_id = :item_id
                     ORDER BY comment.post_time DESC";
 
      // A PDO::Statement is prepared from the query.
      $statement = $db->prepare($query);
-     $statementImg = $db->prepare($queryImg);
      $statementCom = $db->prepare($queryCom);
+
+     $statement->bindValue(':item_id', $item_id, PDO::PARAM_INT);
+     $statementCom->bindValue(':item_id', $item_id, PDO::PARAM_INT);
 
      // Execution on the DB server is delayed until we execute().
      $statement->execute();
-     $statementImg->execute();
      $statementCom->execute(); 
 
      $rows = $statement->fetch();
@@ -70,11 +70,9 @@ require('connect.php');
 
                     <p><?= $rows['game'] ?></p>
                     <?php $timestamp = strtotime($rows['last_update']);?>
-                        <?php while($rowImg = $statementImg->fetch()): ?>
                             <p>
-							<img src="uploads/<?= $rowImg['destination'] ?>" alt="picture" width="600" height="400">
+							<img src="uploads/<?= $rows['img'] ?>" alt="picture" width="600" height="400">
                             </p>
-                        <?php endwhile ?>
                     <p><small><?= date("F j, Y, g:i a", $timestamp) ?>
                         <?php if(isset($_SESSION['user_id']) && ($rows['user_id'] === $_SESSION['user_id'] || $_SESSION['userrole'] === 'admin')): ?>
                         -<a href="edit.php?item_id=<?= $rows['item_id']?>">edit</a></small>

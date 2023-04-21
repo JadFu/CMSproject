@@ -4,6 +4,7 @@ session_start();
 require('connect.php');
 
 $postCondition = false;
+$query = false;
 if ($_POST && $_POST['formStatus'] == 'newPost') {
     //  Sanitize user input to escape HTML entities and filter out dangerous characters.
     $user_id = filter_input(INPUT_POST, 'user_id', FILTER_VALIDATE_INT);
@@ -16,8 +17,38 @@ if ($_POST && $_POST['formStatus'] == 'newPost') {
     $price = filter_input(INPUT_POST, 'price', FILTER_VALIDATE_FLOAT);
     
     //  Build the parameterized SQL query and bind to the above sanitized values.
-    $query = "INSERT INTO item(user_id, game, console, categories, area, current_condition, info, price) VALUES (:user_id, :game, :console, :categories, :area, :current_condition, :info, :price)";
-    $statement = $db->prepare($query);
+    if(!file_exists($_FILES['file']['tmp_name']) || !is_uploaded_file($_FILES['file']['tmp_name'])){
+        echo "No image has been include in the post, You could add image when editing your post later.";
+        $query = "INSERT INTO item(user_id, game, console, categories, area, current_condition, info, price) VALUES (:user_id, :game, :console, :categories, :area, :current_condition, :info, :price)";
+        $statement = $db->prepare($query);
+    }else{
+        $file = $_FILES['file'];
+        $fileName = $_FILES['file']['name'];
+        $fileTmpName = $_FILES['file']['tmp_name'];
+        $fileSize = $_FILES['file']['size'];
+        $fileError = $_FILES['file']['error'];
+        $fileType = $_FILES['file']['type'];
+        $fileExt = explode('.', $fileName);
+        $fileActualExt = strtolower(end($fileExt));
+    
+        $allowed = ['jpg', 'jpeg', 'png'];
+    
+        if(in_array($fileActualExt, $allowed)){
+            if($fileError === 0){
+                    $newName = uniqid('', true).".".$fileActualExt;
+                    $fileDestination = 'uploads/'.$newName;
+                    move_uploaded_file($fileTmpName, $fileDestination);
+    
+                    $query = "INSERT INTO item(user_id, game, console, categories, area, current_condition, info, Img, price) VALUES (:user_id, :game, :console, :categories, :area, :current_condition, :info, :newName, :price)";
+                    $statement = $db->prepare($query);
+                    $statement->bindValue(':newName', $newName);
+            }else{
+                echo "There was an Error when uploading your file!";
+            }
+        }else{
+            echo "You cannot upload file of this type!";
+        }
+    }
     
     //  Bind values to the parameters
     $statement->bindValue(':user_id', $user_id);
@@ -37,56 +68,6 @@ if ($_POST && $_POST['formStatus'] == 'newPost') {
 
 }
 
-if(!file_exists($_FILES['file']['tmp_name']) || !is_uploaded_file($_FILES['file']['tmp_name'])){
-    echo "No image has been include in the post, You could add image when editing your post later.";
-}else{
-    $file = $_FILES['file'];
-    $fileName = $_FILES['file']['name'];
-    $fileTmpName = $_FILES['file']['tmp_name'];
-    $fileSize = $_FILES['file']['size'];
-    $fileError = $_FILES['file']['error'];
-    $fileType = $_FILES['file']['type'];
-    $fileExt = explode('.', $fileName);
-    $fileActualExt = strtolower(end($fileExt));
-
-    $allowed = ['jpg', 'jpeg', 'png'];
-
-    if(in_array($fileActualExt, $allowed)){
-        if($fileError === 0){
-                $newName = uniqid('', true).".".$fileActualExt;
-                $fileDestination = 'uploads/'.$newName;
-                move_uploaded_file($fileTmpName, $fileDestination);
-
-                if($postCondition){
-                        echo "uploading image into database: in progress....";
-                        $user_id = filter_input(INPUT_POST, 'user_id', FILTER_VALIDATE_INT);
-                        $queryId = "SELECT * FROM item WHERE user_id = :user_id ORDER BY last_update DESC LIMIT 1";
-                        $statementId = $db->prepare($queryId);
-    
-                        //  Bind values to the parameters
-                        $statementId->bindValue(':user_id', $user_id);
-
-                        if($rowsId = $statementId->fetch()){
-                        $item_id = $rowsId['item_id'];
-                        $queryImg = "INSERT INTO image (destination, item_id) VALUES (:newName, :item_id)";
-
-                        $statementImg = $db->prepare($queryImg);
-
-                        $statementImg->bindValue(':newName', $newName);
-                        $statementImg->bindValue(':item_id', $item_id);
-
-                            if($statementImg->execute()){
-                                echo "image upload success!";
-                            }
-                        }else{echo "image upload failed!";}
-                    }
-        }else{
-            echo "There was an Error when uploading your file!";
-        }
-    }else{
-        echo "You cannot upload file of this type!";
-    }
-}
 ?>
 
 <!DOCTYPE html>

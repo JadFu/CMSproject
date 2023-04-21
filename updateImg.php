@@ -4,10 +4,19 @@ session_start();
 require('connect.php');
 
 $editCondition = false;
+
 if ($_POST && $_POST['formStatus'] == 'updateImg') {
-    if(!file_exists($_FILES['file']['tmp_name']) || !is_uploaded_file($_FILES['file']['tmp_name'])){
-        echo "No image has been include in the post, You could add image when editing your post later.";
-    }else{
+    $item_id = filter_input(INPUT_POST, 'item_id', FILTER_SANITIZE_NUMBER_INT);
+
+    $query = "SELECT * FROM ITEM WHERE item_id = :item_id";
+    
+        $statement = $db->prepare($query);
+        $statement->bindValue(':item_id', $item_id, PDO::PARAM_INT);
+        // Execute the SELECT and fetch the single row returned.
+        $statement->execute(); 
+        $rows = $statement->fetch();
+
+    if(file_exists($_FILES['file']['tmp_name'])){
         $file = $_FILES['file'];
         $fileName = $_FILES['file']['name'];
         $fileTmpName = $_FILES['file']['tmp_name'];
@@ -23,18 +32,22 @@ if ($_POST && $_POST['formStatus'] == 'updateImg') {
             if($fileError === 0){
                     $newName = uniqid('', true).".".$fileActualExt;
                     $fileDestination = 'uploads/'.$newName;
+                    if(!($rows['img'] === 'NullImg.jpg')){
+                        $destination = $rows['img'];
+                        array_map('unlink', array_filter(glob("uploads/{$destination}"), 'is_file'));
+                    }
                     move_uploaded_file($fileTmpName, $fileDestination);
     
                     echo "uploading image into database: in progress....";
-                    $item_id = filter_input(INPUT_POST, 'item_id', FILTER_SANITIZE_NUMBER_INT);
 
-                    $queryImg = "INSERT INTO image (destination, item_id) VALUES (:newName, :item_id)";
+                    $queryImg = "UPDATE item SET img = :newName WHERE item_id = :item_id";
     
                     $statementImg = $db->prepare($queryImg);
     
                     $statementImg->bindValue(':newName', $newName);
                     $statementImg->bindValue(':item_id', $item_id);
     
+
                                 if($statementImg->execute()){
                                     echo "image upload success!";
                                     $editCondition = true;
@@ -90,6 +103,7 @@ if ($_POST && $_POST['formStatus'] == 'updateImg') {
     <div id="postcard">
         <?php if($editCondition):?>
             <h2>Thanks for your Submission</h2>
+            <h3>To re-edit your game copy, <a href="show.php?item_id=<?= $_POST['item_id']?>">Click Here</a></h3>
             <h2><a href="index.php">Go Back To GCH Home page</a></h2>
         <?php else: ?>
             <h2>Your Submission Failed</h2>

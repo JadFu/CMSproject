@@ -12,21 +12,17 @@ if (isset($_GET['item_id'])) {
         $query = "SELECT * FROM ITEM WHERE item_id = :item_id";
         $queryCat = "SELECT * FROM category";
         $queryCon = "SELECT * FROM console";
-        $queryImg = "SELECT * FROM image WHERE item_id = :item_id";
     
         $statement = $db->prepare($query);
         $statementCat = $db->prepare($queryCat);
         $statementCon = $db->prepare($queryCon);
-        $statementImg = $db->prepare($queryImg);
 
         $statement->bindValue(':item_id', $item_id, PDO::PARAM_INT);
-        $statementImg->bindValue(':item_id', $item_id, PDO::PARAM_INT);
         
         // Execute the SELECT and fetch the single row returned.
         $statement->execute();
         $statementCat->execute(); 
         $statementCon->execute();
-        $statementImg->execute();
         
         $rows = $statement->fetch();
 }
@@ -112,6 +108,10 @@ if (isset($_GET['item_id'])) {
                             <textarea id="info" name="info" rows="10" cols="100"><?= $rows['info'] ?></textarea>
                         </div>
 
+                        <div id="imageCard">
+                            <img src="uploads/<?= $rows['img'] ?>" alt="picture" width="600" height="400">
+                        </div>
+
                         <div id="post_price">
                             <label for="price">PRICE</label><br>
                             <input id="price" name="price" value="<?= $rows['price'] ?>">
@@ -123,35 +123,33 @@ if (isset($_GET['item_id'])) {
                 </fieldset>
             </form>
 
-
-                        <fieldset id="currentImage">
-                            <legend>current images:</legend>
-                            <?php while($rowImg = $statementImg->fetch()): ?>
-                                <p>
-                                    <form method="post" action="deleteImg.php">
-                                        <input type="hidden" name="formStatus" value="deleteImg">
-                                        <input type="hidden" name="item_id" value="<?= $_GET['item_id'] ?>">
-                                        <input type="hidden" name="destination" value="<?= $rowImg['destination'] ?>">
-                                        <input type="submit" value="delete">
-                                    </form>
-							        <img src="uploads/<?= $rowImg['destination'] ?>" alt="picture" width="600" height="400">
-                                </p>
-                            <?php endwhile ?>
-                        </fieldset>
-
-
         <fieldset id="image">
-            <legend>Add an image:</legend>
+
+            <legend>update image:</legend>
+            
             <form method="post" action="updateImg.php" enctype="multipart/form-data">
                 <div id="addImg">
                             <input type="hidden" name="formStatus" value="updateImg">
                             <input type="hidden" name="user_id" value="<?= $_SESSION['user_id'] ?>">
                             <input type="hidden" name="item_id" value="<?= $_GET['item_id'] ?>">
                     <input type="file" name="file">
-                    <input type="submit" value="upload">
+                    <input type="submit" value="upload new image">
                 </div>
             </form>
+
+            <?php if(!($rows['img'] === "NullImg.jpg")): ?>
+                <form method="post" action="deleteImg.php">
+                    <div id="deleteImg">
+                                <input type="hidden" name="formStatus" value="deleteImg">
+                                <input type="hidden" name="user_id" value="<?= $_SESSION['user_id'] ?>">
+                                <input type="hidden" name="item_id" value="<?= $_GET['item_id'] ?>">
+                        <input type="submit" value="delete current image">
+                    </div>
+                </form>
+            <?php endif ?>
+
         </fieldset>
+
         <fieldset id="delete">
             <legend>Delete:</legend>
             <h2>Caution: Do Not Miss Click!</h2>

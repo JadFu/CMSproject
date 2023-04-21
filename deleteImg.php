@@ -5,20 +5,32 @@ require('connect.php');
 
 
 if ($_POST && $_POST['formStatus'] == 'deleteImg') {
-        // Sanitize user input to escape HTML entities and filter out dangerous characters.
-        $destination = $_POST['destination'];
-        
-        // Build the parameterized SQL query and bind to the above sanitized values.
-        $query = "DELETE FROM image WHERE destination = :destination";
+
+    $item_id = filter_input(INPUT_POST, 'item_id', FILTER_SANITIZE_NUMBER_INT);
+
+    $query = "SELECT * FROM ITEM WHERE item_id = :item_id";
+    
         $statement = $db->prepare($query);
-
-        $statement->bindValue(':destination', $destination);
-        
-        // Execute the INSERT.
+        $statement->bindValue(':item_id', $item_id, PDO::PARAM_INT);
+        // Execute the SELECT and fetch the single row returned.
         $statement->execute(); 
+        $rows = $statement->fetch();
 
+    if(!($rows['img'] === 'NullImg.jpg')){
+        $destination = $rows['img'];
         array_map('unlink', array_filter(glob("uploads/{$destination}"), 'is_file'));
     }
+
+        $queryImg = "UPDATE item SET img = 'NullImg.jpg' WHERE item_id = :item_id";
+    
+        $statementImg = $db->prepare($queryImg);
+    
+        $statementImg->bindValue(':item_id', $item_id);
+    
+        if($statementImg->execute()){
+            echo "image deleted!";
+        }
+}
 ?>
 
 <!DOCTYPE html>
