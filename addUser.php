@@ -43,6 +43,31 @@ if ($_POST && isset($_POST['formStatus']) && $_POST['formStatus'] == 'addUser') 
     <title>Add User</title>
 </head>
 <body>
+<div id="container">
+        <div id="header">
+            <h1><a href="index.php">Graphic Card Haters</a></h1>
+
+            <div id="searching">
+                <form method="post" action="search.php">
+                    <input type="hidden" name="formStatus" value="search">
+                    <label for="search">Search:</label><br>
+                    <input id="search" name="search"><br>
+                    <label for="base">Search From</label><br>
+                    <select id="base" name="base">
+						<option value="name">Game Name</option>
+                        <option value="console">Console</option>
+                        <option value="category">Category</option>
+					</select><br>
+                    <input type="submit">
+                </form>
+            </div>
+
+            <?php if(!isset($_SESSION['userrole'])): ?>
+                <h3><a href="login.php">login</a>/<a href="register.php">register</a></h3>
+            <?php else: ?>
+                <h3><a href="profile.php">profile</a>/<a href="logout.php">logout</a></h3>
+            <?php endif ?>
+        </div>
     <!-- Remember that alternative syntax is good and html inside php is bad -->
     <div id="postcard">
         <?php if(!$userAdded): ?>
@@ -72,9 +97,12 @@ if ($_POST && isset($_POST['formStatus']) && $_POST['formStatus'] == 'addUser') 
                 </fieldset>
             </form>
         <?php else: ?>
+            <div id='reportcard'>
             <h2>Success</h2>
             <h2><a href="profile.php">Go Back To profile</a></h2>
+            </div>
         <?php endif ?>
+    </div>
     </div>
 </body>
 </html>

@@ -30,6 +30,32 @@ if ($_POST && $_POST['formStatus'] == 'deleteUser') {
     <title>Delete Post</title>
 </head>
 <body>
+<div id="container">
+<div id="header">
+            <h1><a href="index.php">Graphic Card Haters</a></h1>
+
+            <div id="searching">
+                <form method="post" action="search.php">
+                    <input type="hidden" name="formStatus" value="search">
+                    <label for="search">Search:</label><br>
+                    <input id="search" name="search"><br>
+                    <label for="base">Search From</label><br>
+                    <select id="base" name="base">
+						<option value="name">Game Name</option>
+                        <option value="console">Console</option>
+                        <option value="category">Category</option>
+					</select><br>
+                    <input type="submit">
+                </form>
+            </div>
+
+            <?php if(!isset($_SESSION['userrole'])): ?>
+                <h3><a href="login.php">login</a>/<a href="register.php">register</a></h3>
+            <?php else: ?>
+                <h3><a href="profile.php">profile</a>/<a href="logout.php">logout</a></h3>
+            <?php endif ?>
+        </div>
+<div id='reportcard'>
     <!-- Remember that alternative syntax is good and html inside php is bad -->
     <?php if(!filter_input(INPUT_POST, 'user_id', FILTER_VALIDATE_INT)):?>
 
@@ -41,6 +67,7 @@ if ($_POST && $_POST['formStatus'] == 'deleteUser') {
         <h2><a href="adminManage.php">Go Back To adminManage</a></h2>
 
     <?php endif ?>
-
+    </div>
+    </div>
 </body>
 </html>

@@ -35,9 +35,25 @@ require('connect.php');
 <body>
     <!-- Remember that alternative syntax is good and html inside php is bad -->
 
-    <div id="wrapper">
+    <div id="container">
         <div id="header">
             <h1><a href="index.php">Graphic Card Haters</a></h1>
+
+            <div id="searching">
+                <form method="post" action="search.php">
+                    <input type="hidden" name="formStatus" value="search">
+                    <label for="search">Search:</label><br>
+                    <input id="search" name="search"><br>
+                    <label for="base">Search From</label><br>
+                    <select id="base" name="base">
+						<option value="name">Game Name</option>
+                        <option value="console">Console</option>
+                        <option value="category">Category</option>
+					</select><br>
+                    <input type="submit">
+                </form>
+            </div>
+
             <?php if(!isset($_SESSION['userrole'])): ?>
                 <h3><a href="login.php">login</a>/<a href="register.php">register</a></h3>
             <?php else: ?>
@@ -75,7 +91,7 @@ require('connect.php');
             </li>
         </ul>
 
-        <div id="all_item">
+        <div id="showcard">
             <?php while($rows = $statement->fetch()): ?>
                 <div class="item_post">
                     <p><?= $rows['game'] ?></p>
@@ -88,11 +104,11 @@ require('connect.php');
                 </div>
             <?php endwhile ?>
         </div>
-    </div>
 
-    <div id="footer">
-        Copywrong 2023 - No Rights Reserved Yet
+        <div id="footer">
+            Copywrong 2023 - No Rights Reserved Yet
+        </div>
     </div>
-
+    </div>
 </body>
 </html>
