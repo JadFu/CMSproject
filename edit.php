@@ -7,22 +7,26 @@ if (isset($_GET['item_id'])) {
         // Retrieve quote to be edited, if id GET parameter is in URL.
         // Sanitize the id. Like above but this time from INPUT_GET.
         $item_id = filter_input(INPUT_GET, 'item_id', FILTER_SANITIZE_NUMBER_INT);
-        
+
         // Build the parametrized SQL query using the filtered id.
         $query = "SELECT * FROM ITEM WHERE item_id = :item_id";
         $queryCat = "SELECT * FROM category";
         $queryCon = "SELECT * FROM console";
+        $queryImg = "SELECT * FROM image WHERE item_id = :item_id";
     
         $statement = $db->prepare($query);
         $statementCat = $db->prepare($queryCat);
         $statementCon = $db->prepare($queryCon);
+        $statementImg = $db->prepare($queryImg);
 
         $statement->bindValue(':item_id', $item_id, PDO::PARAM_INT);
+        $statementImg->bindValue(':item_id', $item_id, PDO::PARAM_INT);
         
         // Execute the SELECT and fetch the single row returned.
         $statement->execute();
         $statementCat->execute(); 
         $statementCon->execute();
+        $statementImg->execute();
         
         $rows = $statement->fetch();
 }
@@ -118,6 +122,24 @@ if (isset($_GET['item_id'])) {
                         </div>
                 </fieldset>
             </form>
+
+
+                        <fieldset id="currentImage">
+                            <legend>current images:</legend>
+                            <?php while($rowImg = $statementImg->fetch()): ?>
+                                <p>
+                                    <form method="post" action="deleteImg.php">
+                                        <input type="hidden" name="formStatus" value="deleteImg">
+                                        <input type="hidden" name="item_id" value="<?= $_GET['item_id'] ?>">
+                                        <input type="hidden" name="destination" value="<?= $rowImg['destination'] ?>">
+                                        <input type="submit" value="delete">
+                                    </form>
+							        <img src="uploads/<?= $rowImg['destination'] ?>" alt="picture" width="600" height="400">
+                                </p>
+                            <?php endwhile ?>
+                        </fieldset>
+
+
         <fieldset id="image">
             <legend>Add an image:</legend>
             <form method="post" action="updateImg.php" enctype="multipart/form-data">

@@ -70,11 +70,11 @@ require('connect.php');
 
                     <p><?= $rows['game'] ?></p>
                     <?php $timestamp = strtotime($rows['last_update']);?>
-                    <p>
                         <?php while($rowImg = $statementImg->fetch()): ?>
+                            <p>
 							<img src="uploads/<?= $rowImg['destination'] ?>" alt="picture" width="600" height="400">
+                            </p>
                         <?php endwhile ?>
-                    </p>
                     <p><small><?= date("F j, Y, g:i a", $timestamp) ?>
                         <?php if(isset($_SESSION['user_id']) && ($rows['user_id'] === $_SESSION['user_id'] || $_SESSION['userrole'] === 'admin')): ?>
                         -<a href="edit.php?item_id=<?= $rows['item_id']?>">edit</a></small>
