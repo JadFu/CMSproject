@@ -36,6 +36,33 @@ if ($_POST && $_POST['formStatus'] == 'newPost') {
     }
 
 }
+
+if(!file_exists($_FILES['file']['tmp_name']) || !is_uploaded_file($_FILES['file']['tmp_name'])){
+    echo "No image has been include in the post, You could add image when editing your post later.";
+}else{
+    $file = $_FILES['file'];
+    $fileName = $_FILES['file']['name'];
+    $fileTmpName = $_FILES['file']['tmp_name'];
+    $fileSize = $_FILES['file']['size'];
+    $fileError = $_FILES['file']['error'];
+    $fileType = $_FILES['file']['type'];
+    $fileExt = explode('.', $fileName);
+    $fileActualExt = strtolower(end($fileExt));
+
+    $allowed = ['jpg', 'jpeg', 'png'];
+
+    if(in_array($fileActualExt, $allowed)){
+        if($fileError === 0){
+                $newName = uniqid('', true).".".$fileActualExt;
+                $fileDestination = 'uploads/'.$newName;
+                move_uploaded_file($fileTmpName, $fileDestination);
+        }else{
+            echo "There was an Error when uploading your file!";
+        }
+    }else{
+        echo "You cannot upload file of this type!";
+    }
+}
 ?>
 
 <!DOCTYPE html>

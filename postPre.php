@@ -58,7 +58,7 @@ require('connect.php');
 
     <div id="postcard">
         <?php if(isset($_SESSION['user_id'])):?>
-            <form method="post" action="postAfter.php">
+            <form method="post" action="postAfter.php" enctype="multipart/form-data">
                 <fieldset>
                     <legend>New Post:</legend>
 
@@ -101,6 +101,10 @@ require('connect.php');
                         <div id="post_price">
                             <label for="price">PRICE</label><br>
                             <input id="price" name="price">
+                        </div>
+
+                        <div id="addImg">
+                            <input type="file" name="file">
                         </div>
 
                         <div id="submit">
