@@ -48,11 +48,11 @@ require('connect.php');
             <?php endif ?>
         </div>
     <div id="showList">
-        <h2>Current Console_title</h2>
+        <h2>Current Console_title</a></h2>
         <ul>
             <li><b>Console Name</b></li>
             <?php while($rowCon = $statementCon->fetch()): ?>
-                <li><?= $rowCon['console_title'] ?></li>
+                <li><?= $rowCon['console_title'] ?> - <a href="deleteCon.php?title=<?= $rowCon['console_title'] ?>">delete</a></li>
             <?php endwhile ?>
         </ul>
     </div>

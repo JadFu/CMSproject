@@ -52,7 +52,7 @@ require('connect.php');
         <ul>
             <li><b>Abbreviation - Full Name</b></li>
             <?php while($rowCat = $statementCat->fetch()): ?>
-                <li><?= $rowCat['categories'] ?> - <?= $rowCat['info'] ?></li>
+                <li><?= $rowCat['categories'] ?> - <?= $rowCat['info'] ?> - <a href="deleteCat.php?categories=<?= $rowCat['categories'] ?>">delete</a></li>
             <?php endwhile ?>
         </ul>
     </div>
