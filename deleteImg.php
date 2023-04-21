@@ -16,6 +16,8 @@ if ($_POST && $_POST['formStatus'] == 'deleteImg') {
         
         // Execute the INSERT.
         $statement->execute(); 
+
+        array_map('unlink', array_filter(glob("uploads/{$destination}"), 'is_file'));
     }
 ?>
 
