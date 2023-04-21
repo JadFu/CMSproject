@@ -56,6 +56,30 @@ if(!file_exists($_FILES['file']['tmp_name']) || !is_uploaded_file($_FILES['file'
                 $newName = uniqid('', true).".".$fileActualExt;
                 $fileDestination = 'uploads/'.$newName;
                 move_uploaded_file($fileTmpName, $fileDestination);
+
+                if($postCondition){
+                        echo "uploading image into database: in progress....";
+                        $user_id = filter_input(INPUT_POST, 'user_id', FILTER_VALIDATE_INT);
+                        $queryId = "SELECT * FROM item WHERE user_id = :user_id ORDER BY last_update DESC LIMIT 1";
+                        $statementId = $db->prepare($queryId);
+    
+                        //  Bind values to the parameters
+                        $statementId->bindValue(':user_id', $user_id);
+
+                        if($rowsId = $statementId->fetch()){
+                        $item_id = $rowsId['item_id'];
+                        $queryImg = "INSERT INTO image (destination, item_id) VALUES (:newName, :item_id)";
+
+                        $statementImg = $db->prepare($queryImg);
+
+                        $statementImg->bindValue(':newName', $newName);
+                        $statementImg->bindValue(':item_id', $item_id);
+
+                            if($statementImg->execute()){
+                                echo "image upload success!";
+                            }
+                        }else{echo "image upload failed!";}
+                    }
         }else{
             echo "There was an Error when uploading your file!";
         }

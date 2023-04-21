@@ -118,7 +118,18 @@ if (isset($_GET['item_id'])) {
                         </div>
                 </fieldset>
             </form>
-
+        <fieldset id="image">
+            <legend>Add an image:</legend>
+            <form method="post" action="updateImg.php" enctype="multipart/form-data">
+                <div id="addImg">
+                            <input type="hidden" name="formStatus" value="updateImg">
+                            <input type="hidden" name="user_id" value="<?= $_SESSION['user_id'] ?>">
+                            <input type="hidden" name="item_id" value="<?= $_GET['item_id'] ?>">
+                    <input type="file" name="file">
+                    <input type="submit" value="upload">
+                </div>
+            </form>
+        </fieldset>
         <fieldset id="delete">
             <legend>Delete:</legend>
             <h2>Caution: Do Not Miss Click!</h2>

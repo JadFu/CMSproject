@@ -7,6 +7,7 @@ require('connect.php');
 
      // SQL is written as a String.
      $query = "SELECT * FROM item WHERE item_id = $item_id";
+     $queryImg = "SELECT * FROM image WHERE item_id = $item_id";
      $queryCom = "SELECT comment.comment_id, comment.item_id, comment.user_id, comment.post_time, comment.comments, user.name
                     FROM comment JOIN user ON comment.user_id = user.user_id
                     WHERE comment.item_id = $item_id
@@ -14,10 +15,12 @@ require('connect.php');
 
      // A PDO::Statement is prepared from the query.
      $statement = $db->prepare($query);
+     $statementImg = $db->prepare($queryImg);
      $statementCom = $db->prepare($queryCom);
 
      // Execution on the DB server is delayed until we execute().
-     $statement->execute(); 
+     $statement->execute();
+     $statementImg->execute();
      $statementCom->execute(); 
 
      $rows = $statement->fetch();
@@ -67,6 +70,11 @@ require('connect.php');
 
                     <p><?= $rows['game'] ?></p>
                     <?php $timestamp = strtotime($rows['last_update']);?>
+                    <p>
+                        <?php while($rowImg = $statementImg->fetch()): ?>
+							<img src="uploads/<?= $rowImg['destination'] ?>" alt="picture" width="600" height="400">
+                        <?php endwhile ?>
+                    </p>
                     <p><small><?= date("F j, Y, g:i a", $timestamp) ?>
                         <?php if(isset($_SESSION['user_id']) && ($rows['user_id'] === $_SESSION['user_id'] || $_SESSION['userrole'] === 'admin')): ?>
                         -<a href="edit.php?item_id=<?= $rows['item_id']?>">edit</a></small>
