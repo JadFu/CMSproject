@@ -60,7 +60,7 @@ if($rows = $statement->fetch()){
                         <option value="console">Console</option>
                         <option value="category">Category</option>
 					</select><br>
-                    <input type="submit">
+                    <input type="submit" value="search">
                 </form>
             </div>
 
@@ -71,7 +71,7 @@ if($rows = $statement->fetch()){
             <?php endif ?>
         </div>
   <?php if(!isset($_SESSION['userrole'])): ?>
-    <div class="login">
+    <div id="login">
       <form action="login.php" method="post">
         <label for="username">USER NAME</label>
         <input name="username" id="username" required>

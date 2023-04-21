@@ -51,7 +51,7 @@ require('connect.php');
                         <option value="console">Console</option>
                         <option value="category">Category</option>
 					</select><br>
-                    <input type="submit">
+                    <input type="submit" value="search">
                 </form>
             </div>
 
@@ -81,16 +81,18 @@ require('connect.php');
                 
             </div>
 
-            <div id="comment">
+            <div id="comments">
                 <br><h2>Comments: </h2>
                 <?php while($rowCom = $statementCom->fetch()): ?>
+                    <div id="showcard">
                     <h3><?= $rowCom['name'] ?></h3>
                     <p><small><?= date("F j, Y, g:i a", $timestamp) ?>
-                        <?php if(isset($_SESSION['user_id']) && ($rows['user_id'] === $_SESSION['user_id'] || $_SESSION['userrole'] === 'admin')): ?>
+                        <?php if(isset($_SESSION['user_id']) && ($rows['user_id'] == $_SESSION['user_id'] || $_SESSION['userrole'] === 'admin')): ?>
                         -<a href="editCom.php?comment_id=<?= $rowCom['comment_id']?>">edit comments</a></small>
                         <?php endif ?>
                     </p>
                     <p><?= $rowCom['comments'] ?></p>
+                    </div>
                 <?php endwhile ?>  
             </div>
 

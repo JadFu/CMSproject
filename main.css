@@ -2,6 +2,7 @@
 
 /* Global styles */
 body {
+  font-size: 16px;
   font-family: 'Roboto', sans-serif;
   background-color: #f2f2f2;
   margin: 0;
@@ -38,6 +39,7 @@ body {
 }
 
 #postcard {
+  border: 1px;
   background-color: white;
   padding: 10px;
   margin-top: 20px;
@@ -119,4 +121,28 @@ body {
   color: white;
   padding: 10px;
   margin-top: 20px;
+}
+
+#login{
+  display: flex;
+  margin: auto;
+  border: 1px solid black;
+}
+
+#showcard{
+  border: 1px solid black;
+  font-size: 14px;
+}
+
+#comments{
+  border: 1px solid black;
+  font-size: 15px;
+}
+
+.item_post{
+  border: 1px solid black;
+}
+
+input, p, h1, h2, h3, h4, h5, h6{
+  margin: 10px 10px;
 }

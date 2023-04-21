@@ -48,7 +48,7 @@ if (isset($_GET['user_id'])) { // Retrieve quote to be edited, if id GET paramet
                         <option value="console">Console</option>
                         <option value="category">Category</option>
 					</select><br>
-                    <input type="submit">
+                    <input type="submit" value="search">
                 </form>
             </div>
 

@@ -42,7 +42,7 @@ require('connect.php');
                         <option value="console">Console</option>
                         <option value="category">Category</option>
 					</select><br>
-                    <input type="submit">
+                    <input type="submit" value="search">
                 </form>
             </div>
 

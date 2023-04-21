@@ -45,7 +45,7 @@ require('connect.php');
                         <option value="console">Console</option>
                         <option value="category">Category</option>
 					</select><br>
-                    <input type="submit">
+                    <input type="submit" value="search">
                 </form>
             </div>
 
@@ -68,8 +68,8 @@ require('connect.php');
 
                 <div>
                     <ul>
-                        <li><a href="changePass.php">change password</a></li>
-                        <li><a href="changeInfo.php">change e-mail and user information</a></li>
+                        <li><a href="">change password(avaliable soon)</a></li>
+                        <li><a href="">change e-mail and user information(avaliable soon)</a></li>
                         <?php if($rows['role'] === 'admin'): ?>
                             <li><a href="adminManage.php">Manage User</a></li>
                             <li><a href="addUser.php">Add User</a></li>

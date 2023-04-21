@@ -47,7 +47,7 @@ if (isset($_GET['comment_id'])) { // Retrieve quote to be edited, if id GET para
                         <option value="console">Console</option>
                         <option value="category">Category</option>
 					</select><br>
-                    <input type="submit">
+                    <input type="submit" value="search">
                 </form>
             </div>
 
