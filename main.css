@@ -146,3 +146,57 @@ body {
 input, p, h1, h2, h3, h4, h5, h6{
   margin: 10px 10px;
 }
+
+/* table styles */
+.item_post {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+}
+
+/* table caption */
+.item_post caption {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+/* table header styles */
+.item_post th {
+  background-color: #141414;
+  color: #fff;
+  font-size: 18px;
+  font-weight: bold;
+  padding: 12px;
+  text-align: left;
+}
+
+/* table row styles */
+.item_post tr {
+  height: 50px;
+}
+
+/* zebra striped rows */
+.item_post tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.item_post tr:nth-child(odd) {
+  background-color: #bbbbbb;
+}
+
+/* table cell styles */
+.item_post td {
+  padding: 12px;
+}
+
+/* hover effect on rows */
+.item_post tr:hover {
+  background-color: #a2d3ae;
+  cursor: pointer;
+}
+
+.item_post th:hover {
+  background-color: #d68853;
+  cursor: pointer;
+}

@@ -8,7 +8,20 @@ $statementConS = $db->prepare($queryConS);
 $statementConS->execute();
 
      // SQL is written as a String.
-    $query = "SELECT * FROM item ORDER BY last_update DESC";
+    $query = false;
+    if($_GET && isset($_GET['name'])){
+        $query = "SELECT * FROM item ORDER BY game ASC";
+    }elseif($_GET && isset($_GET['console'])){
+        $query = "SELECT * FROM item ORDER BY console ASC";
+    }elseif($_GET && isset($_GET['categories'])){
+        $query = "SELECT * FROM item ORDER BY categories ASC";
+    }elseif($_GET && isset($_GET['time'])){
+        $query = "SELECT * FROM item ORDER BY last_update DESC";
+    }elseif($_GET && isset($_GET['price'])){
+        $query = "SELECT * FROM item ORDER BY price ASC";
+    }else{
+        $query = "SELECT * FROM item ORDER BY item_id ASC";
+    }
     $queryCat = "SELECT * FROM category";
     $queryCon = "SELECT * FROM console";
 
@@ -96,17 +109,26 @@ $statementConS->execute();
         </ul>
 
         <div id="showcard">
-            <?php while($rows = $statement->fetch()): ?>
-                <div class="item_post">
-                    <p><?= $rows['game'] ?></p>
-                    <?php $timestamp = strtotime($rows['last_update']);?>
-                    <p><small><?= date("F j, Y, g:i a", $timestamp) ?> -<a href="show.php?item_id=<?= $rows['item_id']?>">see full post</a></small>
-                    </p>
-                    <p><?= $rows['console'] ?></p>
-                    <p><?= $rows['categories'] ?></p>
-                    <p><?= $rows['price'] ?></p>
-                </div>
-            <?php endwhile ?>
+                    <table class="item_post">
+                        <caption>Recent Post</caption>
+                        <tr>
+                            <th onclick="window.location='index.php?name=true';">Game Name</th>
+                            <th onclick="window.location='index.php?console=true';">Console</th>
+                            <th onclick="window.location='index.php?categories=true';">Categories</th>
+                            <th onclick="window.location='index.php?time=true';">Update</th>
+                            <th onclick="window.location='index.php?price=true';">price</th>
+                        </tr>
+                    <?php while($rows = $statement->fetch()): ?>
+                            <tr onclick="window.location='show.php?item_id=<?= $rows['item_id']?>';">
+                                <td><?= $rows['game'] ?></td>
+                                <td><?= $rows['console'] ?></td>
+                                <td><?= $rows['categories'] ?></td>
+                                <?php $timestamp = strtotime($rows['last_update']);?>
+                                <td><?= date("F j, Y, g:i a", $timestamp) ?></td>
+                                <td><?= $rows['price'] ?></td>
+                            </tr>
+                    <?php endwhile ?>
+                    </table>
         </div>
 
         <div id="footer">
