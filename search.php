@@ -2,25 +2,37 @@
 
 session_start();
 require('connect.php');
+
+$queryConS = "SELECT * FROM console";
+$statementConS = $db->prepare($queryConS);
+$statementConS->execute();
+
     $validSearch = false;
+    $query = false;
     $search = filter_input(INPUT_POST, 'search', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $base = filter_input(INPUT_POST, 'base', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-    if($_POST && $_POST['formStatus'] == 'search' && $_POST['base'] == "name"){
+    if($_POST && $_POST['formStatus'] == 'search' && $_POST['base'] == "All"){
         $validSearch = true;
-        $query = "SELECT * FROM item WHERE game LIKE '%{$search}%'";
-    }elseif($_POST && $_POST['formStatus'] == 'search' && $_POST['base'] == "console"){
+        $query = "SELECT * FROM item 
+                    WHERE game LIKE '%{$search}%'
+                    OR console LIKE '%{$search}%'
+                    OR categories LIKE '%{$search}%'
+                    OR info LIKE '%{$search}%'
+                    ORDER BY last_update DESC";
+        $statement = $db->prepare($query);
+    }elseif($_POST && $_POST['formStatus'] == 'search'){
         $validSearch = true;
-        $query = "SELECT * FROM item WHERE console LIKE '%{$search}%'";
-    }elseif($_POST && $_POST['formStatus'] == 'search' && $_POST['base'] == "category"){
-        $validSearch = true;
-        $query = "SELECT * FROM item JOIN category ON category.categories = item.categories WHERE item.categories LIKE '%{$search}%' OR category.info LIKE '%{$search}%'";
+        $baseterm = $_POST['base'];
+        $query = "SELECT * FROM item 
+                    WHERE (console = :baseterm AND game LIKE '%{$search}%')
+                    OR (console = :baseterm AND categories LIKE '%{$search}%')
+                    OR (console = :baseterm AND info LIKE '%{$search}%')";
+        $statement = $db->prepare($query);
+        $statement->bindValue(':baseterm', $baseterm);
     }
      // A PDO::Statement is prepared from the query.
-     $statement = $db->prepare($query);
-
      // Execution on the DB server is delayed until we execute().
-     $statement->execute(); 
-
+    $statement->execute();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -43,9 +55,10 @@ require('connect.php');
                     <input id="search" name="search"><br>
                     <label for="base">Search From</label><br>
                     <select id="base" name="base">
-						<option value="name">Game Name</option>
-                        <option value="console">Console</option>
-                        <option value="category">Category</option>
+                        <option value="All" selected>All console</option>
+                        <?php while($rowConS = $statementConS->fetch()): ?>
+                            <option value="<?= $rowConS['console_title']?>"><?= $rowConS['console_title']?></option>
+                        <?php endwhile ?>
 					</select><br>
                     <input type="submit" value="search">
                 </form>

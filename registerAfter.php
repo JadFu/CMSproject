@@ -4,7 +4,9 @@ session_start();
 require('connect.php');
 
 $registatus = false;
-
+$queryConS = "SELECT * FROM console";
+$statementConS = $db->prepare($queryConS);
+$statementConS->execute();
 if ($_POST && $_POST['formStatus'] == 'register') {
     //  Sanitize user input to escape HTML entities and filter out dangerous characters.
     $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -60,9 +62,10 @@ if ($_POST && $_POST['formStatus'] == 'register') {
                     <input id="search" name="search"><br>
                     <label for="base">Search From</label><br>
                     <select id="base" name="base">
-						<option value="name">Game Name</option>
-                        <option value="console">Console</option>
-                        <option value="category">Category</option>
+                        <option value="All" selected>All console</option>
+                        <?php while($rowConS = $statementConS->fetch()): ?>
+                            <option value="<?= $rowConS['console_title']?>"><?= $rowConS['console_title']?></option>
+                        <?php endwhile ?>
 					</select><br>
                     <input type="submit" value="search">
                 </form>

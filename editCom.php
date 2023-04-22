@@ -2,7 +2,9 @@
 
 session_start();
 require('connect.php');
-
+$queryConS = "SELECT * FROM console";
+$statementConS = $db->prepare($queryConS);
+$statementConS->execute();
 if (isset($_GET['comment_id'])) { // Retrieve quote to be edited, if id GET parameter is in URL.
         // Sanitize the id. Like above but this time from INPUT_GET.
         $comment_id = filter_input(INPUT_GET, 'comment_id', FILTER_SANITIZE_NUMBER_INT);
@@ -43,9 +45,10 @@ if (isset($_GET['comment_id'])) { // Retrieve quote to be edited, if id GET para
                     <input id="search" name="search"><br>
                     <label for="base">Search From</label><br>
                     <select id="base" name="base">
-						<option value="name">Game Name</option>
-                        <option value="console">Console</option>
-                        <option value="category">Category</option>
+                        <option value="All" selected>All console</option>
+                        <?php while($rowConS = $statementConS->fetch()): ?>
+                            <option value="<?= $rowConS['console_title']?>"><?= $rowConS['console_title']?></option>
+                        <?php endwhile ?>
 					</select><br>
                     <input type="submit" value="search">
                 </form>

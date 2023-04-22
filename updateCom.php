@@ -2,7 +2,9 @@
 
 session_start();
 require('connect.php');
-
+$queryConS = "SELECT * FROM console";
+$statementConS = $db->prepare($queryConS);
+$statementConS->execute();
 $editCondition = false;
 if ($_POST && $_POST['formStatus'] == 'updateComment') {
     //  Sanitize user input to escape HTML entities and filter out dangerous characters.
@@ -54,9 +56,10 @@ if ($_POST && $_POST['formStatus'] == 'updateComment') {
                     <input id="search" name="search"><br>
                     <label for="base">Search From</label><br>
                     <select id="base" name="base">
-						<option value="name">Game Name</option>
-                        <option value="console">Console</option>
-                        <option value="category">Category</option>
+                        <option value="All" selected>All console</option>
+                        <?php while($rowConS = $statementConS->fetch()): ?>
+                            <option value="<?= $rowConS['console_title']?>"><?= $rowConS['console_title']?></option>
+                        <?php endwhile ?>
 					</select><br>
                     <input type="submit" value="search">
                 </form>
