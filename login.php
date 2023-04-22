@@ -80,7 +80,7 @@ if($rows = $statement->fetch()){
         <label for="username">USER NAME</label>
         <input name="username" id="username" required>
         <label for="userpass">USER PASSWORD</label>
-        <input name="userpass" id="userpass" required>
+        <input name="userpass" id="userpass" type="password" required>
         <input type="submit" value="Login">
       </form>
     </div>

@@ -29,9 +29,10 @@ if ($_POST && $_POST['formStatus'] == 'register') {
     
     //  Execute the INSERT.
     //  execute() will check for possible SQL injection and remove if necessary
-    $statement->execute(); 
+        if($statement->execute()){
+            $registatus = true;
+        }
 
-    $registatus = true;
 
     } elseif ($userpass != $confirm) {
 
